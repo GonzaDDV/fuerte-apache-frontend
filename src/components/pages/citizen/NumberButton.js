@@ -1,5 +1,11 @@
-import React from 'react';
-import {View, Text, TouchableWithoutFeedback, StyleSheet} from 'react-native';
+import React, {useRef, useEffect} from 'react';
+import {
+  View,
+  Text,
+  Animated,
+  TouchableWithoutFeedback,
+  StyleSheet,
+} from 'react-native';
 
 import {
   width,
@@ -10,13 +16,47 @@ import {
 const NumberButton = (props) => {
   const {number, setSelectedNumber, selectedNumber} = props;
   const isSelected = number === selectedNumber;
+
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  const fadeIn = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const fadeOut = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const colorInterpolation = fadeAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['rgb(255,255,255)', 'rgb(101,185,143)'],
+  });
+
+  useEffect(() => {
+    isSelected ? fadeIn() : fadeOut();
+  }, [isSelected]);
+
   return (
     <TouchableWithoutFeedback onPress={() => setSelectedNumber(number)}>
-      <View style={[styles.button, isSelected && styles.selected]}>
+      <Animated.View
+        style={[
+          styles.button,
+          isSelected && {
+            backgroundColor: colorInterpolation,
+          },
+        ]}>
         <Text style={[styles.buttonText, isSelected && styles.selectedText]}>
           {number || '+'}
         </Text>
-      </View>
+      </Animated.View>
     </TouchableWithoutFeedback>
   );
 };
@@ -36,9 +76,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(20),
     fontFamily: 'Nunito-Regular',
   },
-  selected: {
-    backgroundColor: '#65B98F',
-  },
+  selected: {},
   selectedText: {
     color: '#fff',
   },

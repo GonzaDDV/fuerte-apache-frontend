@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {
   View,
   Text,
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
 
 import {
@@ -15,25 +16,51 @@ import {
 
 import Recycle from '../../../assets/images/recycle.png';
 import Trash from '../../../assets/images/trash.png';
+import BananaTrash from '../../../assets/images/trash-2.png';
 
 const SelectType = ({nextStep}) => {
+  const [selected, setSelected] = useState(-1);
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  const press = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1.1,
+      duration: 90,
+      useNativeDriver: true,
+    }).start(() => {
+      nextStep();
+    });
+  };
+
+  useEffect(() => {
+    selected > -1 && press();
+  }, [selected]);
+
   return (
     <>
-      <TouchableWithoutFeedback onPress={nextStep}>
-        <View style={styles.button}>
+      <TouchableWithoutFeedback onPress={() => setSelected(1)}>
+        <Animated.View
+          style={[
+            styles.button,
+            selected === 1 && {transform: [{scale: fadeAnim}]},
+          ]}>
+          <Image source={BananaTrash} />
+          <Text style={[styles.buttonText, styles.buttonTextTrash]}>
+            Residuos
+          </Text>
+        </Animated.View>
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={() => setSelected(0)}>
+        <Animated.View
+          style={[
+            styles.button,
+            selected === 0 && {transform: [{scale: fadeAnim}]},
+          ]}>
           <Image source={Recycle} />
           <Text style={[styles.buttonText, styles.buttonTextRecycle]}>
             Reciclable
           </Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={nextStep}>
-        <View style={styles.button}>
-          <Image source={Trash} />
-          <Text style={[styles.buttonText, styles.buttonTextTrash]}>
-            Residuos
-          </Text>
-        </View>
+        </Animated.View>
       </TouchableWithoutFeedback>
     </>
   );

@@ -16,31 +16,16 @@ const SelectAmount = ({nextStep, prevStep, setSuccess}) => {
       <View>
         <Text style={styles.title}>Cantidad de bolsas</Text>
         <View style={styles.numbers}>
-          <NumberButton
-            number={1}
-            selectedNumber={selectedNumber}
-            setSelectedNumber={setSelectedNumber}
-          />
-          <NumberButton
-            number={2}
-            selectedNumber={selectedNumber}
-            setSelectedNumber={setSelectedNumber}
-          />
-          <NumberButton
-            number={3}
-            selectedNumber={selectedNumber}
-            setSelectedNumber={setSelectedNumber}
-          />
-          <NumberButton
-            number={4}
-            selectedNumber={selectedNumber}
-            setSelectedNumber={setSelectedNumber}
-          />
-          <NumberButton
-            number={0}
-            selectedNumber={selectedNumber}
-            setSelectedNumber={setSelectedNumber}
-          />
+          {Array(5)
+            .fill(0)
+            .map((item, i) => (
+              <NumberButton
+                number={i === 4 ? 0 : i + 1}
+                key={i}
+                selectedNumber={selectedNumber}
+                setSelectedNumber={setSelectedNumber}
+              />
+            ))}
         </View>
         <View style={styles.buttons}>
           <TouchableWithoutFeedback onPress={prevStep}>

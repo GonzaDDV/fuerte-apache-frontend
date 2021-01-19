@@ -74,6 +74,12 @@ const Popup = (props) => {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width,
+    height,
+    zIndex: 1000,
     alignItems: 'center',
     justifyContent: 'center',
   },
