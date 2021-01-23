@@ -6,16 +6,9 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import {PermissionsAndroid} from 'react-native';
 
 import 'react-native-gesture-handler';
 
@@ -31,6 +24,12 @@ import Login from './src/components/pages/account/Login';
 import Register from './src/components/pages/account/Register';
 
 const App = () => {
+  useEffect(() => {
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+  }, []);
+
   return (
     <>
       <NavigationContainer>

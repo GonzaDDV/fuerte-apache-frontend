@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, ImageBackground, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
 import {
   width,
@@ -7,52 +7,14 @@ import {
   moderateScale,
 } from '../../../functions/ResponsiveFontSize';
 
-import MapBackground from '../../../assets/images/map-background.png';
+import Map from '../../global/Map';
 
 import SelectAmount from './SelectAmount';
 import SelectType from './SelectType';
 import Popup from '../../global/Popup';
-import MapView from 'react-native-maps';
 
 const MainCitizen = () => {
   const [currentStep, setCurrentStep] = useState(0);
-
-  const MAP_STYLE = [
-    {
-      featureType: 'administrative',
-      elementType: 'geometry',
-      stylers: [
-        {
-          visibility: 'off',
-        },
-      ],
-    },
-    {
-      featureType: 'poi',
-      stylers: [
-        {
-          visibility: 'off',
-        },
-      ],
-    },
-    {
-      featureType: 'road',
-      elementType: 'labels.icon',
-      stylers: [
-        {
-          visibility: 'off',
-        },
-      ],
-    },
-    {
-      featureType: 'transit',
-      stylers: [
-        {
-          visibility: 'off',
-        },
-      ],
-    },
-  ];
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
   const prevStep = () => setCurrentStep((prev) => prev - 1);
@@ -72,13 +34,7 @@ const MainCitizen = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <MapView
-        accessible={false}
-        showsCompass={false}
-        moveOnMarkerPress={false}
-        style={styles.map}
-        showsUserLocation
-        showsMyLocationButton={false}></MapView>
+      <Map />
       {success && (
         <Popup
           close={() => setSuccess(false)}
@@ -97,11 +53,6 @@ const styles = StyleSheet.create({
     width,
     height,
   },
-  map: {
-    width: '100%',
-    height: '100%',
-    zIndex: -1,
-  },
   background: {
     width,
     height,
@@ -114,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     paddingVertical: height * 0.05,
     position: 'absolute',
-    bottom: 25,
+    bottom: 20,
     borderTopRightRadius: moderateScale(20),
     borderTopLeftRadius: moderateScale(20),
   },

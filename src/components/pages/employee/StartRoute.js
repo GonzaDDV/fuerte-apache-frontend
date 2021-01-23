@@ -1,17 +1,39 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {View, Text, StyleSheet, Animated} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {moderateScale, height} from '../../../functions/ResponsiveFontSize';
 
 const StartRoute = ({nextStep}) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const fadeIn = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const fadeOut = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start(nextStep);
+  };
+
+  useEffect(() => {
+    fadeIn();
+  }, []);
+
   return (
-    <View style={styles.mainContainer}>
-      <TouchableWithoutFeedback onPress={nextStep}>
+    <Animated.View style={[styles.mainContainer, {opacity: fadeAnim}]}>
+      <TouchableWithoutFeedback onPress={fadeOut}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Iniciar recorrido</Text>
         </View>
       </TouchableWithoutFeedback>
-    </View>
+    </Animated.View>
   );
 };
 
