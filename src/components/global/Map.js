@@ -1,45 +1,183 @@
-import React, {useEffect, useRef} from 'react';
-import MapView from 'react-native-maps';
+import React from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  Switch,
+  Alert,
+  Image,
+} from 'react-native';
+import MapView, {
+  PROVIDER_GOOGLE,
+  Marker,
+  AnimatedRegion,
+  Circle,
+} from 'react-native-maps';
+//import MapViewDirections from 'react-native-maps-directions';
+//import Geocoder from 'react-native-geocoder';
 import {getUserLocation} from '../../functions/UserLocation';
 
-const Map = (props) => {
-  const mapRef = useRef(null);
+import {width, height, moderateScale} from '../../functions/ResponsiveFontSize';
+import Popup from './Popup';
 
-  const goToUserLocation = async () => {
-    await getUserLocation(async (position) => {
-      console.log(position);
-      const {latitude, longitude} = position.coords;
-      mapRef.current.animateCamera({
-        zoom: 15.6,
-        center: {
-          latitude,
-          longitude,
-        },
+const origin = {latitude: -34.51257677882224, longitude: -58.48521799748956};
+const destination = {
+  latitude: -34.54890367500137,
+  longitude: -58.454655947639345,
+};
+const GOOGLE_MAPS_APIKEY = '';
+let id = 0;
+const latDelta = 0.025;
+const lonDelta = 0.025;
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      region: {
+        latitude: -34.51260962788937,
+        longitude: -58.4848275202878,
+        latDelta,
+        lonDelta,
+      },
+      markers: [],
+
+      toggle: false,
+
+      //destino: {
+      //  lat: -34.54890367500137,
+      //  lon: -58.454655947639345
+      //}
+    };
+  }
+
+  onMapPress(e) {
+    if (this.state.toggle == true) {
+      this.setState({
+        markers: [
+          ...this.state.markers,
+          {
+            coordinate: e.nativeEvent.coordinate,
+            key: id++,
+            color: 'red',
+            latitude: e.nativeEvent.coordinate.latitude,
+            longitude: e.nativeEvent.coordinate.longitude,
+          },
+        ],
       });
+    }
+  }
+
+  async currentLocation() {
+    await getUserLocation((pos) => {
+      let initialPosition = {
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+        latitudeDelta: 0.025,
+        longitudeDelta: 0.025,
+      };
+      this.setState({initialPosition});
+    });
+  }
+
+  componentDidMount() {
+    this.currentLocation();
+  }
+
+  onChangeValue = (region) => {
+    this.setState({
+      region,
     });
   };
 
-  useEffect(() => {
-    goToUserLocation();
-  }, []);
+  sendLocation = () => {
+    // enviar al servidor
+    this.setState({success: true});
+  };
 
-  return (
-    <MapView
-      accessible={false}
-      showsCompass={false}
-      moveOnMarkerPress={false}
-      style={{
-        width: '100%',
-        height: '100%',
-        zIndex: -1,
-      }}
-      showsUserLocation
-      followsUserLocation
-      showsMyLocationButton={false}
-      ref={mapRef}>
-      {props.children}
-    </MapView>
-  );
-};
+  render() {
+    const {navigation} = this.props;
+    return (
+      <View style={styles.container}>
+        {this.state.success && (
+          <Popup
+            close={() => navigation.navigate('Home')}
+            icon="check-circle"
+            title="Listo"
+            text="Sus residuos serán recogidos pronto. ¡Muchas gracias!"
+          />
+        )}
+        <View style={styles.button}>
+          <TouchableOpacity onPress={this.sendLocation}>
+            <Text style={styles.text}>Confirmar ubicacion</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            top: '50%',
+            left: '50%',
+            marginLeft: -24,
+            marginTop: -48,
+            position: 'absolute',
+            zIndex: 100,
+          }}>
+          <Image
+            style={{
+              height: 48,
+              width: 48,
+            }}
+            source={require('../../assets/marker.png')}
+          />
+        </View>
+        <MapView
+          style={styles.map}
+          provider={PROVIDER_GOOGLE}
+          ref={(map) => (this._map = map)}
+          initialRegion={this.state.initialPosition}
+          //followUserLocation={true}
+          onRegionChangeComplete={this.onChangeValue}
+          //zoomEnabled={true}
+          onPress={(e) => this.onMapPress(e)}
+          showsUserLocation={true}
+        />
+      </View>
+    );
+  }
+}
 
-export default Map;
+const styles = StyleSheet.create({
+  map: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  marker: {
+    height: 48,
+    width: 48,
+  },
+  button: {
+    backgroundColor: '#6EB38E',
+    borderRadius: 12,
+    padding: 14,
+    alignItems: 'center',
+    width: '90%',
+    zIndex: 100,
+    bottom: height * 0.1,
+    position: 'absolute',
+  },
+  text: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: moderateScale(16),
+  },
+});

@@ -1,11 +1,11 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, StyleSheet, Animated} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {moderateScale, height} from '../../../functions/ResponsiveFontSize';
+import Route from './Route';
 
-const StartRoute = ({nextStep}) => {
+const StartRouteComponent = ({nextStep}) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-
   const fadeIn = () => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -35,6 +35,29 @@ const StartRoute = ({nextStep}) => {
       </TouchableWithoutFeedback>
     </Animated.View>
   );
+};
+
+const StartRoute = ({navigation}) => {
+  const [step, setStep] = useState(0);
+
+  const nextStep = () => setStep((prev) => ++prev);
+  const goToStep = (step) => setStep(step);
+
+  useEffect(() => {
+    console.log(step);
+  }, [step]);
+
+  const steps = [
+    <StartRouteComponent nextStep={nextStep} />,
+    <Route
+      goToStep={() => {
+        goToStep();
+        navigation.navigate('Home');
+      }}
+    />,
+  ];
+
+  return <>{steps[step]}</>;
 };
 
 const styles = StyleSheet.create({

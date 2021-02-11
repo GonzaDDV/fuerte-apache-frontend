@@ -22,6 +22,8 @@ import CitizenMap from './src/components/pages/citizen/MainCitizen';
 import EmployeeMap from './src/components/pages/employee/MainEmployee';
 import Login from './src/components/pages/account/Login';
 import Register from './src/components/pages/account/Register';
+import {StoreProvider} from 'easy-peasy';
+import {store} from './src/state/store';
 
 const App = () => {
   useEffect(() => {
@@ -32,35 +34,38 @@ const App = () => {
 
   return (
     <>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Register"
-            component={Register}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Citizen Map"
-            component={CitizenMap}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Employee Map"
-            component={EmployeeMap}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <StoreProvider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{headerShown: false}}
+            />
+
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Citizen Map"
+              component={CitizenMap}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Employee Map"
+              component={EmployeeMap}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </StoreProvider>
     </>
   );
 };

@@ -13,15 +13,23 @@ import {
   height,
   moderateScale,
 } from '../../../functions/ResponsiveFontSize';
+import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 
 import Recycle from '../../../assets/images/recycle.png';
-import Trash from '../../../assets/images/trash.png';
+import Batteries from '../../../assets/images/batteries.png';
 import BananaTrash from '../../../assets/images/trash-2.png';
+import {useStoreActions, useStoreState} from 'easy-peasy';
 
-const SelectType = ({nextStep}) => {
-  const [selected, setSelected] = useState(-1);
-  const fadeAnim = useRef(new Animated.Value(1)).current;
+const SelectType = ({navigation}) => {
+  const selected = useStoreState((state) => state.citizen.types);
+  const setSelected = useStoreActions((actions) => actions.setSelected);
+  const [canContinue, setCanContinue] = useState(false);
 
+  const nextStep = () => {
+    navigation.navigate('Select Amount', {selected});
+  };
+
+  /* const fadeAnim = useRef(new Animated.Value(1)).current;
   const press = () => {
     Animated.timing(fadeAnim, {
       toValue: 1.1,
@@ -34,58 +42,200 @@ const SelectType = ({nextStep}) => {
 
   useEffect(() => {
     selected > -1 && press();
+  }, [selected]); */
+
+  useEffect(() => {
+    const selectedTrue =
+      Object.values(selected).filter((item) => item.selected === true).length >=
+      1;
+    setCanContinue(selectedTrue);
   }, [selected]);
 
   return (
-    <>
-      <TouchableWithoutFeedback onPress={() => setSelected(1)}>
-        <Animated.View
-          style={[
-            styles.button,
-            selected === 1 && {transform: [{scale: fadeAnim}]},
-          ]}>
-          <Image source={BananaTrash} />
-          <Text style={[styles.buttonText, styles.buttonTextTrash]}>
-            Residuos
-          </Text>
-        </Animated.View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={() => setSelected(0)}>
-        <Animated.View
-          style={[
-            styles.button,
-            selected === 0 && {transform: [{scale: fadeAnim}]},
-          ]}>
-          <Image source={Recycle} />
-          <Text style={[styles.buttonText, styles.buttonTextRecycle]}>
-            Reciclable
-          </Text>
-        </Animated.View>
-      </TouchableWithoutFeedback>
-    </>
+    <View style={styles.mainContainer}>
+      <Text style={styles.title}>Seleccioná el tipo</Text>
+      <View style={styles.buttonsContainer}>
+        <TouchableWithoutFeedback onPress={() => setSelected('trash')}>
+          <Animated.View
+            style={[
+              styles.button,
+              styles.buttonTrash,
+              selected.trash.selected === true && styles.buttonTrashSelected,
+            ]}>
+            {selected.trash.selected === true && (
+              <View style={[styles.tick, styles.tickTrash]}>
+                <FontAwesome
+                  name="check"
+                  size={moderateScale(12)}
+                  color="#fff"
+                />
+              </View>
+            )}
+            <Image
+              source={BananaTrash}
+              style={styles.buttonImage}
+              resizeMode="contain"
+            />
+            <Text style={[styles.buttonText, styles.buttonTextTrash]}>
+              Residuos
+            </Text>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => setSelected('recycle')}>
+          <Animated.View
+            style={[
+              styles.button,
+              styles.buttonRecycle,
+              selected.recycle.selected === true &&
+                styles.buttonRecycleSelected,
+            ]}>
+            {selected.recycle.selected === true && (
+              <View style={[styles.tick, styles.tickRecycle]}>
+                <FontAwesome
+                  name="check"
+                  size={moderateScale(12)}
+                  color="#fff"
+                />
+              </View>
+            )}
+            <Image
+              source={Recycle}
+              style={styles.buttonImage}
+              resizeMode="contain"
+            />
+            <Text style={[styles.buttonText, styles.buttonTextRecycle]}>
+              Reciclable
+            </Text>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => setSelected('special')}>
+          <Animated.View
+            style={[
+              styles.button,
+              styles.buttonSpecial,
+              selected.special.selected === true &&
+                styles.buttonSpecialSelected,
+            ]}>
+            {selected.special.selected === true && (
+              <View style={[styles.tick, styles.tickSpecial]}>
+                <FontAwesome
+                  name="check"
+                  size={moderateScale(12)}
+                  color="#fff"
+                />
+              </View>
+            )}
+            <Image
+              source={Batteries}
+              style={styles.buttonImage}
+              resizeMode="contain"
+            />
+            <Text style={[styles.buttonText, styles.buttonTextSpecial]}>
+              Especiales
+            </Text>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+      </View>
+      {canContinue && (
+        <TouchableWithoutFeedback onPress={nextStep}>
+          <View style={styles.nextButton}>
+            <Text style={styles.nextButtonText}>Confirmar</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    width,
+    height,
+    backgroundColor: '#6EB38E',
+    alignItems: 'center',
+    paddingTop: height * 0.1,
+  },
+  title: {
+    fontSize: moderateScale(30),
+    color: '#fff',
+    fontFamily: 'Nunito-Regular',
+    marginBottom: height * 0.05,
+    textAlign: 'center',
+  },
+  buttonsContainer: {
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   button: {
     backgroundColor: '#fff',
-    height: moderateScale(130),
-    width: moderateScale(130),
-    borderRadius: 16,
+    height: moderateScale(150),
+    width: moderateScale(150),
+    borderRadius: 1000,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 4,
+    elevation: 7,
+    position: 'relative',
   },
+  buttonImage: {width: '50%'},
   buttonText: {
     marginTop: 15,
     fontSize: moderateScale(18),
     fontFamily: 'Nunito-Regular',
   },
+  tick: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    padding: 10,
+    elevation: 6,
+    borderRadius: 1000,
+  },
+  nextButton: {
+    borderWidth: 2,
+    borderColor: '#fff',
+    borderRadius: 12,
+    paddingHorizontal: width * 0.075,
+    paddingVertical: height * 0.015,
+    marginTop: height * 0.1,
+  },
+  nextButtonText: {
+    color: '#fff',
+    fontSize: moderateScale(20),
+  },
+
+  buttonTrashSelected: {
+    borderWidth: 4,
+    borderColor: '#A67E74',
+  },
+  buttonRecycleSelected: {
+    borderWidth: 4,
+    borderColor: '#6EB38E',
+  },
+  buttonSpecialSelected: {
+    borderWidth: 4,
+    borderColor: '#3F5C6C',
+  },
+  buttonTextTrash: {
+    color: '#A67E74',
+  },
   buttonTextRecycle: {
     color: '#6EB38E',
   },
-  buttonTextTrash: {
-    color: '#9E9797',
+  buttonTextSpecial: {
+    color: '#3F5C6C',
+  },
+  tickTrash: {
+    backgroundColor: '#A67E74',
+  },
+  tickRecycle: {
+    backgroundColor: '#6EB38E',
+  },
+  tickSpecial: {
+    backgroundColor: '#3F5C6C',
   },
 });
 

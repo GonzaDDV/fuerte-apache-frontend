@@ -11,39 +11,59 @@ import Map from '../../global/Map';
 
 import SelectAmount from './SelectAmount';
 import SelectType from './SelectType';
+import SelectLocation from './SelectLocation';
+import SendMessage from './SendMessage';
+
 import Popup from '../../global/Popup';
+import {createStackNavigator} from '@react-navigation/stack';
+import LocationMap from './LocationMap';
 
 const MainCitizen = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-
-  const nextStep = () => setCurrentStep((prev) => prev + 1);
-  const prevStep = () => setCurrentStep((prev) => prev - 1);
-
   const [success, setSuccess] = useState(false);
 
-  const steps = {
-    0: <SelectType nextStep={nextStep} />,
-    1: (
-      <SelectAmount
-        nextStep={nextStep}
-        prevStep={prevStep}
-        setSuccess={setSuccess}
-      />
-    ),
-  };
+  const Stack = createStackNavigator();
 
   return (
     <View style={styles.mainContainer}>
-      <Map />
+      {/* <Map />
       {success && (
         <Popup
-          close={() => setSuccess(false)}
+          close={() => {
+            setSuccess(false);
+            setCurrentStep(0);
+          }}
           icon="check-circle"
           title="¡Listo!"
           text="Sus residuos serán recogidos pronto. ¡Muchas gracias!"
         />
-      )}
-      <View style={styles.bottomMenu}>{steps[currentStep]}</View>
+      )} */}
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Select Type"
+          component={SelectType}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Select Amount"
+          component={SelectAmount}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Send Message"
+          component={SendMessage}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Select Location"
+          component={SelectLocation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Location Map"
+          component={Map}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
     </View>
   );
 };
@@ -58,14 +78,11 @@ const styles = StyleSheet.create({
     height,
   },
   bottomMenu: {
-    backgroundColor: 'rgba(255,255,255, 0.9)',
     width,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
     paddingVertical: height * 0.05,
-    position: 'absolute',
-    bottom: 20,
     borderTopRightRadius: moderateScale(20),
     borderTopLeftRadius: moderateScale(20),
   },

@@ -25,7 +25,9 @@ const Input = (props) => {
         />
       </View>
       {props.error && (
-        <Text style={styles.error}>Por favor, rellene este campo</Text>
+        <Text style={styles.error}>
+          {props.error.message || 'Por favor, rellene este campo'}
+        </Text>
       )}
     </View>
   );

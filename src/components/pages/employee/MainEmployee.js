@@ -8,27 +8,30 @@ import {
 } from '../../../functions/ResponsiveFontSize';
 
 import Map from '../../global/Map';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import SelectType from './SelectType';
+import EmployeeMap from './EmployeeMap';
 import StartRoute from './StartRoute';
 import Route from './Route';
 
 const MainEmployee = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-
-  const nextStep = () => setCurrentStep((prev) => prev + 1);
-  const prevStep = () => setCurrentStep((prev) => prev - 1);
-
-  const steps = {
-    0: <SelectType nextStep={nextStep} />,
-    1: <StartRoute nextStep={nextStep} />,
-    2: <Route goToStep={setCurrentStep} />,
-  };
+  const Stack = createStackNavigator();
 
   return (
     <View style={styles.mainContainer}>
-      <Map />
-      <View>{steps[currentStep]}</View>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Select Type"
+          component={SelectType}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Map"
+          component={EmployeeMap}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
     </View>
   );
 };

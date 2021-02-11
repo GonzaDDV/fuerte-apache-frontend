@@ -14,7 +14,7 @@ import {
 } from '../../../functions/ResponsiveFontSize';
 
 const NumberButton = (props) => {
-  const {number, setSelectedNumber, selectedNumber} = props;
+  const {number, setSelectedNumber, selectedNumber, color} = props;
   const isSelected = number === selectedNumber;
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
@@ -37,7 +37,7 @@ const NumberButton = (props) => {
 
   const colorInterpolation = fadeAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['rgb(255,255,255)', 'rgb(101,185,143)'],
+    outputRange: ['rgb(255,255,255)', color],
   });
 
   useEffect(() => {
@@ -49,11 +49,17 @@ const NumberButton = (props) => {
       <Animated.View
         style={[
           styles.button,
+          {borderColor: color},
           isSelected && {
             backgroundColor: colorInterpolation,
           },
         ]}>
-        <Text style={[styles.buttonText, isSelected && styles.selectedText]}>
+        <Text
+          style={[
+            styles.buttonText,
+            {color},
+            isSelected && styles.selectedText,
+          ]}>
           {number || '+'}
         </Text>
       </Animated.View>

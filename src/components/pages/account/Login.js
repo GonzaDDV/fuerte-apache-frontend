@@ -6,13 +6,17 @@ import Input from '../../global/Input';
 import Waves from '../../../assets/images/waves-2.png';
 import AccountButton from '../../global/AccountButton';
 import styles from './styles';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Login = ({route, navigation}) => {
   const {type} = route.params;
 
+  const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+
   const {control, handleSubmit, errors} = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // login y pasar al mapa
+    await AsyncStorage.setItem('loggedIn', JSON.stringify(true));
     navigation.navigate(type);
   };
 
@@ -36,7 +40,16 @@ const Login = ({route, navigation}) => {
             />
           )}
           name="email"
-          rules={{required: true}}
+          rules={{
+            required: {
+              value: true,
+              message: 'Por favor, ingrese un correo electrónico válido',
+            },
+            pattern: {
+              value: emailRegex,
+              message: 'Por favor, ingrese un correo electrónico válido',
+            },
+          }}
           defaultValue=""
         />
 
@@ -54,7 +67,17 @@ const Login = ({route, navigation}) => {
             />
           )}
           name="password"
-          rules={{required: true}}
+          rules={{
+            required: {
+              value: true,
+              message: 'Por favor, ingrese una contraseña',
+            },
+            pattern: {
+              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
+              message:
+                'Ingrese una contraseña de al menos 8 caracteres y un número',
+            },
+          }}
           defaultValue=""
         />
 
