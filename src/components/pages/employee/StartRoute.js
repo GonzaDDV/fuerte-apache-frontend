@@ -43,10 +43,6 @@ const StartRoute = ({navigation}) => {
   const nextStep = () => setStep((prev) => ++prev);
   const goToStep = (step) => setStep(step);
 
-  useEffect(() => {
-    console.log(step);
-  }, [step]);
-
   const steps = [
     <StartRouteComponent nextStep={nextStep} />,
     <Route

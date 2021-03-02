@@ -10,9 +10,8 @@ import {
 import {moderateScale, height, width} from '../../functions/ResponsiveFontSize';
 
 import Waves from '../../assets/images/waves-1.png';
-import Dial1 from '../../assets/images/dial-1.png';
-import Button1 from '../../assets/images/button-1.png';
-import Button2 from '../../assets/images/button-2.png';
+import Button1 from '../../assets/images/button-1.svg';
+import Button2 from '../../assets/images/button-2.svg';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useStoreActions} from 'easy-peasy';
 import {useFocusEffect} from '@react-navigation/native';
@@ -23,6 +22,7 @@ const Home = ({navigation}) => {
   useFocusEffect(() => {
     resetState();
   }, []);
+
   const goToScreen = async (type) => {
     const isLoggedIn = await AsyncStorage.getItem('loggedIn');
     if (isLoggedIn) {
@@ -30,7 +30,7 @@ const Home = ({navigation}) => {
       navigation.navigate(type);
     } else {
       // not loggedIn
-      navigation.navigate('Login', {type});
+      navigation.navigate('Register', {type});
     }
   };
 
@@ -40,17 +40,19 @@ const Home = ({navigation}) => {
       <View style={styles.wavesContainer}>
         <Image source={Waves} style={styles.waves} resizeMode="stretch" />
         <View style={styles.buttons}>
-          <Image source={Dial1} style={styles.dialOne} resizeMode="contain" />
+          <Text style={styles.choose}>Seleccionar rol</Text>
           <TouchableWithoutFeedback onPress={() => goToScreen('Citizen Map')}>
-            <Image
-              source={Button1}
+            <Button1
+              //source={Button1}
+              height={height * 0.2}
               style={styles.button}
               resizeMode="contain"
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => goToScreen('Employee Map')}>
-            <Image
-              source={Button2}
+            <Button2
+              //source={Button2}
+              height={height * 0.2}
               style={styles.button}
               resizeMode="contain"
             />
@@ -83,6 +85,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     height: height * 0.12,
   },
+  choose: {
+    fontSize: moderateScale(28),
+    marginTop: height * 0.05,
+    marginBottom: height * 0.01,
+
+    color: '#fff',
+    fontFamily: 'Nunito-Regular',
+  },
   buttons: {
     display: 'flex',
     alignItems: 'center',
@@ -92,8 +102,7 @@ const styles = StyleSheet.create({
     marginTop: height * 0.07,
   },
   button: {
-    height: height * 0.19,
-    marginTop: height * 0.03,
+    marginTop: height * 0.033,
   },
 });
 

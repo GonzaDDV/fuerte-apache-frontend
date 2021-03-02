@@ -14,13 +14,14 @@ import {
   moderateScale,
 } from '../../../functions/ResponsiveFontSize';
 
-import Message from '../../../assets/images/message.png';
+import MessageImage from '../../../assets/images/message.svg';
 
 const LocationMap = ({navigation}) => {
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.title}>Enviá un mensaje al recolector</Text>
-      <Image source={Message} style={styles.image} resizeMode="contain" />
+      {/* <Image source={Message} style={styles.image} resizeMode="contain" /> */}
+      <MessageImage width={width * 0.4} height={width * 0.4} />
       <TextInput
         style={styles.input}
         placeholder="Escribe tu mensaje aquí"

@@ -7,8 +7,6 @@ import {
   moderateScale,
 } from '../../../functions/ResponsiveFontSize';
 
-import Map from '../../global/Map';
-
 import SelectAmount from './SelectAmount';
 import SelectType from './SelectType';
 import SelectLocation from './SelectLocation';
@@ -17,6 +15,7 @@ import SendMessage from './SendMessage';
 import Popup from '../../global/Popup';
 import {createStackNavigator} from '@react-navigation/stack';
 import LocationMap from './LocationMap';
+import CitizenMap from './CitizenMap';
 
 const MainCitizen = () => {
   const [success, setSuccess] = useState(false);
@@ -60,7 +59,7 @@ const MainCitizen = () => {
         />
         <Stack.Screen
           name="Location Map"
-          component={Map}
+          component={CitizenMap}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

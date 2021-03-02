@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, View, ImageBackground, Text} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 
@@ -8,16 +8,23 @@ import AccountButton from '../../global/AccountButton';
 import styles from './styles';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import {url} from '../../../functions/constants';
+import {useStoreActions, useStoreState} from 'easy-peasy';
+import {moderateScale} from '../../../functions/ResponsiveFontSize';
+import ErrorMessage from '../../global/ErrorMessage';
+
 const Login = ({route, navigation}) => {
+  const login = useStoreActions((actions) => actions.login);
+  const error = useStoreState((state) => state.account.error);
   const {type} = route.params;
 
   const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 
   const {control, handleSubmit, errors} = useForm();
   const onSubmit = async (data) => {
-    // login y pasar al mapa
-    await AsyncStorage.setItem('loggedIn', JSON.stringify(true));
-    navigation.navigate(type);
+    login({data, callback: () => navigation.navigate(type)});
   };
 
   return (
@@ -26,6 +33,7 @@ const Login = ({route, navigation}) => {
         <Text style={styles.title}>Iniciar sesión</Text>
       </ImageBackground>
       <View style={styles.inputs}>
+        <ErrorMessage error={error} />
         <Controller
           control={control}
           render={({onChange, onBlur, value}) => (
@@ -72,16 +80,11 @@ const Login = ({route, navigation}) => {
               value: true,
               message: 'Por favor, ingrese una contraseña',
             },
-            pattern: {
-              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
-              message:
-                'Ingrese una contraseña de al menos 8 caracteres y un número',
-            },
           }}
           defaultValue=""
         />
 
-        <Text style={styles.forgotPass}>¿Olvidaste tu contraseña?</Text>
+        {/* <Text style={styles.forgotPass}>¿Olvidaste tu contraseña?</Text> */}
         <AccountButton text="Iniciar sesión" onPress={handleSubmit(onSubmit)} />
         <View style={styles.noAccountContainer}>
           <Text style={styles.noAccount}>¿No tienes cuenta?</Text>

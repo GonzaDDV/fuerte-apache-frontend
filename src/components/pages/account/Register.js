@@ -6,14 +6,21 @@ import Input from '../../global/Input';
 import Waves from '../../../assets/images/waves-2.png';
 import AccountButton from '../../global/AccountButton';
 import styles from './styles';
+import {useStoreActions, useStoreState} from 'easy-peasy';
+import ErrorMessage from '../../global/ErrorMessage';
 
 const Register = ({route, navigation}) => {
+  const register = useStoreActions((actions) => actions.register);
+  const error = useStoreState((state) => state.account.error);
   const {type} = route.params;
 
   const {control, handleSubmit, errors} = useForm();
   const onSubmit = (data) => {
-    // login y pasar al mapa
-    navigation.navigate(type);
+    const dataToSend = {...data, tipo_usuario: ''};
+    register({
+      data: dataToSend,
+      callback: () => navigation.navigate('Login', {type}),
+    });
   };
 
   return (
@@ -22,6 +29,7 @@ const Register = ({route, navigation}) => {
         <Text style={styles.title}>Registrarse</Text>
       </ImageBackground>
       <View style={styles.inputs}>
+        <ErrorMessage error={error} />
         <Controller
           control={control}
           render={({onChange, onBlur, value}) => (
@@ -31,10 +39,60 @@ const Register = ({route, navigation}) => {
               onChangeText={onChange}
               value={value}
               onBlur={onBlur}
-              error={errors.name}
+              error={errors.nombre}
             />
           )}
-          name="name"
+          name="nombre"
+          rules={{required: true}}
+          defaultValue=""
+        />
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              placeholder="Apellido"
+              icon="account-circle"
+              onChangeText={onChange}
+              value={value}
+              onBlur={onBlur}
+              error={errors.apellido}
+            />
+          )}
+          name="apellido"
+          rules={{required: true}}
+          defaultValue=""
+        />
+
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              placeholder="Teléfono"
+              icon="phone"
+              onChangeText={onChange}
+              value={value}
+              onBlur={onBlur}
+              error={errors.email}
+            />
+          )}
+          name="telefono"
+          rules={{required: true}}
+          defaultValue=""
+        />
+
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              placeholder="DNI"
+              icon="assignment-ind"
+              onChangeText={onChange}
+              value={value}
+              onBlur={onBlur}
+              error={errors.dni}
+            />
+          )}
+          name="dni"
           rules={{required: true}}
           defaultValue=""
         />

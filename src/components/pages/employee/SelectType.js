@@ -15,9 +15,9 @@ import {
 } from '../../../functions/ResponsiveFontSize';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 
-import Recycle from '../../../assets/images/recycle.png';
-import Batteries from '../../../assets/images/batteries.png';
-import BananaTrash from '../../../assets/images/trash-2.png';
+import Recycle from '../../../assets/images/recycle.svg';
+import Batteries from '../../../assets/images/batteries.svg';
+import BananaTrash from '../../../assets/images/trash-2.svg';
 import {useStoreActions, useStoreState} from 'easy-peasy';
 
 const SelectType = ({navigation}) => {
@@ -52,8 +52,9 @@ const SelectType = ({navigation}) => {
                 />
               </View>
             )}
-            <Image
-              source={BananaTrash}
+            <BananaTrash
+              // source={BananaTrash}
+              width={moderateScale(75)}
               style={styles.buttonImage}
               resizeMode="contain"
             />
@@ -80,8 +81,9 @@ const SelectType = ({navigation}) => {
                 />
               </View>
             )}
-            <Image
-              source={Recycle}
+            <Recycle
+              // source={Recycle}
+              width={moderateScale(75)}
               style={styles.buttonImage}
               resizeMode="contain"
             />
@@ -108,8 +110,9 @@ const SelectType = ({navigation}) => {
                 />
               </View>
             )}
-            <Image
-              source={Batteries}
+            <Batteries
+              // source={Batteries}
+              width={moderateScale(75)}
               style={styles.buttonImage}
               resizeMode="contain"
             />

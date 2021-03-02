@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import {
   StyleSheet,
@@ -18,6 +19,8 @@ import MapView, {
 //import MapViewDirections from 'react-native-maps-directions';
 //import Geocoder from 'react-native-geocoder';
 import {getUserLocation} from '../../../functions/UserLocation';
+import Popup from '../../global/Popup';
+import MarkerPopup from './MarkerPopup';
 import StartRoute from './StartRoute';
 
 const {width, height} = Dimensions.get('window');
@@ -42,16 +45,21 @@ export default class App extends React.Component {
         latDelta,
         lonDelta,
       },
+      open: {
+        open: false,
+        markerInfo: {},
+      },
       markers: [],
 
       toggle: false,
-
+      residuos: [],
+      error: false,
       //destino: {
       //  lat: -34.54890367500137,
       //  lon: -58.454655947639345
       //}
 
-      residuos: [
+      /* residuos: [
         {
           id_residuo: '1',
           ubicacion: {
@@ -97,26 +105,8 @@ export default class App extends React.Component {
           cantidad_bolsas: '3',
           //fecha_hora_emision:"",
         },
-      ],
+      ], */
     };
-  }
-
-  onMapPress(e) {
-    if (this.state.toggle == true) {
-      this.setState({
-        markers: [
-          ...this.state.markers,
-          {
-            coordinate: e.nativeEvent.coordinate,
-            key: id++,
-            color: 'red',
-            latitude: e.nativeEvent.coordinate.latitude,
-            longitude: e.nativeEvent.coordinate.longitude,
-          },
-        ],
-      });
-      console.log(this.state.markers);
-    }
   }
 
   async currentLocation() {
@@ -127,7 +117,6 @@ export default class App extends React.Component {
         latitudeDelta: 0.025,
         longitudeDelta: 0.025,
       };
-      console.log(initialPosition);
       this.setState({initialPosition});
     });
   }
@@ -137,20 +126,55 @@ export default class App extends React.Component {
   }
 
   onChangeValue = (region) => {
-    console.log(region);
     this.setState({
       region,
     });
   };
 
+  loadMarkers = async () => {
+    const res = await axios.get(
+      'http://54.147.130.75:3000/api/users/getResiduos1/0',
+    );
+    if (res.data.success === 1)
+      this.setState({
+        residuos: res.data.data,
+        error: false,
+      });
+    else this.setState({error: true});
+  };
+
   markersResiduos = () => {
+    console.log(this.state.residuos);
     return this.state.residuos.map((residuos, item) => (
       <Marker
-        key={item} //sino me tira un error (warning each child in a list should have a unique key prop)
+        key={residuos.id_residuo} //sino me tira un error (warning each child in a list should have a unique key prop)
         coordinate={{
-          latitude: residuos.ubicacion.lat,
-          longitude: residuos.ubicacion.lon,
+          latitude: JSON.parse(residuos.ubicacion).lat,
+          longitude: JSON.parse(residuos.ubicacion).lng,
         }}
+        onPress={() =>
+          this.setState({
+            open: {
+              open: true,
+              markerInfo: {
+                name: 'Mateo Benítez',
+                address: 'Roosevelt 5647',
+                trash:
+                  residuos.tipo_res === 0
+                    ? {number: residuos.cantidad_bolsas, label: 'Residuos'}
+                    : null,
+                recycle:
+                  residuos.tipo_res === 1
+                    ? {number: residuos.cantidad_bolsas, label: 'Reciclable'}
+                    : null,
+                special:
+                  residuos.tipo_res === residuos.cantidad_bolsas
+                    ? {number: 2, label: 'Especial'}
+                    : null,
+              },
+            },
+          })
+        }
         description={
           'En ese punto hay ' + residuos.cantidad_bolsas + ' bolsas'
         }></Marker>
@@ -177,6 +201,20 @@ export default class App extends React.Component {
           </TouchableOpacity>
         </View> */}
         <StartRoute navigation={this.props.navigation} />
+        {this.state.open.open && (
+          <MarkerPopup
+            close={() => {
+              this.setState({open: {open: false}});
+            }}
+          />
+        )}
+        {this.state.error && (
+          <Popup
+            error={true}
+            close={() => this.setState({error: false})}
+            text="No se pudieron cargar los residuos"
+          />
+        )}
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
@@ -185,7 +223,7 @@ export default class App extends React.Component {
           //followUserLocation={true}
           onRegionChangeComplete={this.onChangeValue}
           //zoomEnabled={true}
-          onPress={(e) => this.onMapPress(e)}
+          onMapReady={this.loadMarkers}
           showsUserLocation={true}>
           {this.markersResiduos()}
 

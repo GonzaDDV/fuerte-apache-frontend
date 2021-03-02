@@ -21,6 +21,7 @@ import {getUserLocation} from '../../functions/UserLocation';
 
 import {width, height, moderateScale} from '../../functions/ResponsiveFontSize';
 import Popup from './Popup';
+import axios from 'axios';
 
 const origin = {latitude: -34.51257677882224, longitude: -58.48521799748956};
 const destination = {
@@ -44,30 +45,11 @@ export default class App extends React.Component {
       },
       markers: [],
 
-      toggle: false,
-
       //destino: {
       //  lat: -34.54890367500137,
       //  lon: -58.454655947639345
       //}
     };
-  }
-
-  onMapPress(e) {
-    if (this.state.toggle == true) {
-      this.setState({
-        markers: [
-          ...this.state.markers,
-          {
-            coordinate: e.nativeEvent.coordinate,
-            key: id++,
-            color: 'red',
-            latitude: e.nativeEvent.coordinate.latitude,
-            longitude: e.nativeEvent.coordinate.longitude,
-          },
-        ],
-      });
-    }
   }
 
   async currentLocation() {
@@ -92,9 +74,23 @@ export default class App extends React.Component {
     });
   };
 
-  sendLocation = () => {
+  sendLocation = async () => {
     // enviar al servidor
-    this.setState({success: true});
+    const res = await axios.post(
+      'http://54.147.130.75:3000/api/users/postResiduo',
+      {
+        id_usuario: 5, // del login
+        ubicacion: JSON.stringify({
+          lat: this.state.region.latitude,
+          lng: this.state.region.longitude,
+        }), //
+        fecha_hora_emision: Date.now().toLocaleString(),
+        cantidad_bolsas: 0, // estado
+        tipo_residuo: 'recycle',
+      },
+    );
+    console.log(res.data);
+    if (res.data?.success === 1) this.setState({success: true});
   };
 
   render() {
@@ -104,9 +100,7 @@ export default class App extends React.Component {
         {this.state.success && (
           <Popup
             close={() => navigation.navigate('Home')}
-            icon="check-circle"
-            title="Listo"
-            text="Sus residuos serán recogidos pronto. ¡Muchas gracias!"
+            text="¡Residuos entregados correctamente!"
           />
         )}
         <View style={styles.button}>
@@ -139,7 +133,6 @@ export default class App extends React.Component {
           //followUserLocation={true}
           onRegionChangeComplete={this.onChangeValue}
           //zoomEnabled={true}
-          onPress={(e) => this.onMapPress(e)}
           showsUserLocation={true}
         />
       </View>

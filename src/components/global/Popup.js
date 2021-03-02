@@ -11,6 +11,8 @@ import {
 import {width, height, moderateScale} from '../../functions/ResponsiveFontSize';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import SuccessImage from '../../assets/images/waste-2.svg';
+import AccountButton from './AccountButton';
 
 const Popup = (props) => {
   const [isTrue, setIsTrue] = useState(true);
@@ -59,14 +61,27 @@ const Popup = (props) => {
             transform: [{scale: fadeAnim}],
           },
         ]}>
-        <FontAwesome
-          name={props.icon}
-          size={moderateScale(100)}
-          color="#3AC924"
-          style={styles.icon}
-        />
-        <Text style={styles.title}>{props.title}</Text>
-        <Text style={styles.text}>{props.text}</Text>
+        {!props.error &&
+          (props.icon ? (
+            <FontAwesome
+              name={props.icon}
+              size={moderateScale(100)}
+              color="#3AC924"
+              style={styles.icon}
+            />
+          ) : (
+            <SuccessImage
+              height={height * 0.2}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          ))}
+        <Text style={[styles.text, props.error && styles.errorText]}>
+          {props.text}
+        </Text>
+        <View style={{width: '100%', marginTop: 10}}>
+          <AccountButton text="Confirmar" onPress={() => setIsTrue(false)} />
+        </View>
       </Animated.View>
     </View>
   );
@@ -94,6 +109,7 @@ const styles = StyleSheet.create({
   popup: {
     position: 'absolute',
     padding: moderateScale(40),
+    paddingHorizontal: moderateScale(30),
     backgroundColor: '#fff',
     zIndex: 100,
     alignItems: 'center',
@@ -103,16 +119,19 @@ const styles = StyleSheet.create({
   icon: {
     marginBottom: 10,
   },
-  title: {
-    fontFamily: 'Nunito-Bold',
-    fontSize: moderateScale(32),
+  image: {
+    marginBottom: 12,
+    height: height * 0.2,
   },
   text: {
-    fontFamily: 'Nunito-Regular',
+    fontFamily: 'Nunito-Bold',
     textAlign: 'center',
-    fontSize: moderateScale(18),
+    fontSize: moderateScale(24),
     marginTop: 6,
-    color: '#303030',
+    color: '#65B98F',
+  },
+  errorText: {
+    color: '#e9545c',
   },
 });
 
