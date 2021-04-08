@@ -1,12 +1,15 @@
-import React, {Component, useState} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {Component, useEffect, useRef, useState} from 'react';
+import {StyleSheet, Text, View, Image, Animated} from 'react-native';
 
-import SwipeCards from 'react-native-swipe-cards';
+import SwipeCards from 'react-native-swipe-cards-deck';
 import {
   height,
   moderateScale,
   width,
 } from '../../../functions/ResponsiveFontSize';
+import Swipe from '../../../assets/images/swipe.svg';
+import {useStoreActions} from 'easy-peasy';
+import {Easing} from 'react-native';
 
 class Card extends React.Component {
   constructor(props) {
@@ -61,25 +64,64 @@ class Card extends React.Component {
 }
 
 export default (props) => {
+  const collectMarker = useStoreActions((actions) => actions.collectMarker);
   const handleYup = (card) => {
-    console.log(`Yup for ${card.text}`);
+    collectMarker({id: card.id});
+    props.setMarkers((prev) => {
+      const obj = prev;
+      obj[card.id] = {...obj[card.id], collected: true};
+      return obj;
+    });
     props.close();
   };
   const handleNope = (card) => {
-    console.log(`Nope for ${card.text}`);
+    console.log(card);
     props.close();
   };
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const animateLeft = () => {
+    Animated.timing(fadeAnim, {
+      toValue: moderateScale(-10),
+      duration: 1500,
+      useNativeDriver: true,
+      easing: Easing.linear,
+    }).start(animateRight);
+  };
+
+  const animateRight = () => {
+    Animated.timing(fadeAnim, {
+      toValue: moderateScale(10),
+      duration: 1500,
+      useNativeDriver: true,
+      easing: Easing.linear,
+    }).start(animateLeft);
+  };
+
+  useEffect(() => animateLeft(), []);
 
   return (
     <View style={styles.background}>
+      <View style={styles.icon}>
+        <Animated.View style={{transform: [{translateX: fadeAnim}]}}>
+          <Swipe height={moderateScale(40)} />
+        </Animated.View>
+        <Text style={styles.iconText}>
+          Desliza hacia la derecha para recolectar o hacia la izquierda para
+          rechazar
+        </Text>
+      </View>
       <SwipeCards
         cards={props.cards}
         renderCard={(cardData) => <Card {...cardData} />}
+        keyExtractor={(cardData) => cardData.id}
         handleYup={handleYup}
         handleNope={handleNope}
         yupText="Recolectar"
         nopeText="Rechazar"
-        containerStyle={{position: 'absolute'}}
+        onClickHandler={null}
+        dragY={false}
+        smoothTransition
         yupStyle={{
           marginRight: width * 0.1,
           padding: 10,
@@ -110,9 +152,24 @@ export default (props) => {
 };
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.55)',
     width,
     height,
+  },
+  icon: {
+    zIndex: 1000,
+    marginTop: height * 0.05,
+    marginBottom: height * 0.2 * -1,
+    opacity: 0.8,
+  },
+  iconText: {
+    fontSize: moderateScale(15),
+    color: '#fff',
+    fontFamily: 'Nunito-Regular',
+    marginTop: 10,
+    textAlign: 'center',
+    width: '80%',
+    alignSelf: 'center',
   },
   card: {
     justifyContent: 'center',

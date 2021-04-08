@@ -16,7 +16,7 @@ const Register = ({route, navigation}) => {
 
   const {control, handleSubmit, errors} = useForm();
   const onSubmit = (data) => {
-    const dataToSend = {...data, tipo_usuario: ''};
+    const dataToSend = {...data, tipo_usuario: 'ciudadano'};
     register({
       data: dataToSend,
       callback: () => navigation.navigate('Login', {type}),

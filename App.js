@@ -24,6 +24,10 @@ import Login from './src/components/pages/account/Login';
 import Register from './src/components/pages/account/Register';
 import {StoreProvider} from 'easy-peasy';
 import {store} from './src/state/store';
+import {LogBox} from 'react-native';
+import Thanks from './src/components/pages/Thanks';
+
+LogBox.ignoreAllLogs();
 
 const App = () => {
   useEffect(() => {
@@ -31,7 +35,6 @@ const App = () => {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
   }, []);
-
   return (
     <>
       <StoreProvider store={store}>
@@ -43,6 +46,11 @@ const App = () => {
               options={{headerShown: false}}
             />
 
+            <Stack.Screen
+              name="Thanks"
+              component={Thanks}
+              options={{headerShown: false}}
+            />
             <Stack.Screen
               name="Login"
               component={Login}

@@ -24,7 +24,9 @@ const initialState = {
       recycle: {selected: false},
       special: {selected: false},
     },
+    routeStarted: false,
     message: '',
+    collected: [],
   },
   account: {
     loading: false,
@@ -66,11 +68,9 @@ export const store = createStore({
 
   setAccountData: action((state, payload) => {
     state.account = {...state.account, ...payload};
-    console.log(state.account);
   }),
   setLoading: action((state, payload) => {
     state.account.loading = payload;
-    console.log(state.account.loading);
   }),
 
   login: thunk(async (actions, payload) => {
@@ -105,6 +105,30 @@ export const store = createStore({
       }
     } catch (err) {
       actions.setAccountData({error: {error: true, msg: err.response.data}});
+    }
+  }),
+  setRouteStarted: action((state, payload) => {
+    state.employee.routeStarted = payload;
+  }),
+  collectMarker: action((state, payload) => {
+    state.employee.collected.push({
+      id_residuo: payload.id,
+      id_recolector: 1,
+      estado: false,
+      fecha_hora_recoleccion: Date.now().toLocaleString(),
+    });
+  }),
+  finishRoute: thunk(async (actions, payload, {getStoreState}) => {
+    const {
+      employee: {collected},
+    } = getStoreState();
+    const res = await axios.post(
+      'http://54.147.130.75:3000/api/users/terminarRecorrido',
+      {data: collected},
+    );
+    if (res.data.success === 1) {
+      payload.callback();
+      console.log(res?.data);
     }
   }),
 });

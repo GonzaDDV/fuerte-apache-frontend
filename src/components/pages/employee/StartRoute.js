@@ -3,9 +3,18 @@ import {View, Text, StyleSheet, Animated} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {moderateScale, height} from '../../../functions/ResponsiveFontSize';
 import Route from './Route';
+import {useStoreActions} from 'easy-peasy';
+import Popup from '../../global/Popup';
 
 const StartRouteComponent = ({nextStep}) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const setRouteStarted = useStoreActions((actions) => actions.setRouteStarted);
+
+  const startRoute = () => {
+    setRouteStarted(true);
+    nextStep();
+  };
+
   const fadeIn = () => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -19,11 +28,12 @@ const StartRouteComponent = ({nextStep}) => {
       toValue: 0,
       duration: 250,
       useNativeDriver: true,
-    }).start(nextStep);
+    }).start(startRoute);
   };
 
   useEffect(() => {
     fadeIn();
+    setRouteStarted(false);
   }, []);
 
   return (
@@ -39,6 +49,7 @@ const StartRouteComponent = ({nextStep}) => {
 
 const StartRoute = ({navigation}) => {
   const [step, setStep] = useState(0);
+  const [success, setSuccess] = useState(false);
 
   const nextStep = () => setStep((prev) => ++prev);
   const goToStep = (step) => setStep(step);
@@ -46,14 +57,23 @@ const StartRoute = ({navigation}) => {
   const steps = [
     <StartRouteComponent nextStep={nextStep} />,
     <Route
-      goToStep={() => {
-        goToStep();
-        navigation.navigate('Home');
+      finish={() => {
+        setSuccess(true);
       }}
     />,
   ];
 
-  return <>{steps[step]}</>;
+  return (
+    <>
+      {success && (
+        <Popup
+          text="¡Los residuos fueron recolectados correctamente!"
+          close={() => navigation.navigate('Home')}
+        />
+      )}
+      {steps[step]}
+    </>
+  );
 };
 
 const styles = StyleSheet.create({

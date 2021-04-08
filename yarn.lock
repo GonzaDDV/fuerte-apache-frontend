@@ -6397,6 +6397,14 @@ react-native-svg@^12.1.0:
     css-select "^2.1.0"
     css-tree "^1.0.0-alpha.39"
 
+react-native-swipe-cards-deck@^0.2.19:
+  version "0.2.19"
+  resolved "https://registry.yarnpkg.com/react-native-swipe-cards-deck/-/react-native-swipe-cards-deck-0.2.19.tgz#e8ac7cc779d0b6148c1a09b9e69d512fe1538178"
+  integrity sha512-XU+0BMeXC1NzuhWEljKhC8HkL1agn0iCHde8BsVHcTpdR19ffVram0fS4dDGoCadCal2aJikigb7QKIYzNk2mA==
+  dependencies:
+    clamp "^1.0.1"
+    prop-types "^15.7.2"
+
 react-native-swipe-cards@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/react-native-swipe-cards/-/react-native-swipe-cards-0.1.1.tgz#25a31b450f2616f3a25a101c9fc37ccbb2deb3e2"

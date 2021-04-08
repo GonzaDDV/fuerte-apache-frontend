@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     height,
     backgroundColor: '#fff',
     alignItems: 'center',
-    paddingVertical: height * 0.1,
+    paddingVertical: height * 0.13,
     paddingHorizontal: width * 0.05,
   },
 
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignSelf: 'center',
-    marginVertical: moderateScale(40),
     marginTop: 'auto',
     width: '100%',
   },

@@ -89,7 +89,6 @@ export default class App extends React.Component {
         tipo_residuo: 'recycle',
       },
     );
-    console.log(res.data);
     if (res.data?.success === 1) this.setState({success: true});
   };
 

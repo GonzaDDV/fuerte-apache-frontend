@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 
 import {
   width,
@@ -16,6 +16,15 @@ import Popup from '../../global/Popup';
 import {createStackNavigator} from '@react-navigation/stack';
 import LocationMap from './LocationMap';
 import CitizenMap from './CitizenMap';
+import FontAwesome from 'react-native-vector-icons/FontAwesome5';
+
+const CustomHeader = (props) => {
+  return (
+    <View style={styles.header}>
+      <Text style={styles.headerTitle}>Dirección del usuario</Text>
+    </View>
+  );
+};
 
 const MainCitizen = () => {
   const [success, setSuccess] = useState(false);
@@ -36,32 +45,30 @@ const MainCitizen = () => {
           text="Sus residuos serán recogidos pronto. ¡Muchas gracias!"
         />
       )} */}
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Select Type"
-          component={SelectType}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Select Amount"
-          component={SelectAmount}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Send Message"
-          component={SendMessage}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Select Location"
-          component={SelectLocation}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Location Map"
-          component={CitizenMap}
-          options={{headerShown: false}}
-        />
+
+      <Stack.Navigator
+        screenOptions={{
+          header: () => (
+            <View style={styles.header}>
+              <FontAwesome
+                name="map-marker-alt"
+                size={moderateScale(16)}
+                color="#fff"
+              />
+              <Text style={styles.headerTitle}>Dirección del usuario</Text>
+              <FontAwesome
+                name="chevron-down"
+                size={moderateScale(16)}
+                color="#fff"
+              />
+            </View>
+          ),
+        }}>
+        <Stack.Screen name="Select Type" component={SelectType} />
+        <Stack.Screen name="Select Amount" component={SelectAmount} />
+        <Stack.Screen name="Send Message" component={SendMessage} />
+        <Stack.Screen name="Select Location" component={SelectLocation} />
+        <Stack.Screen name="Location Map" component={CitizenMap} />
       </Stack.Navigator>
     </View>
   );
@@ -76,14 +83,24 @@ const styles = StyleSheet.create({
     width,
     height,
   },
-  bottomMenu: {
+  header: {
+    position: 'absolute',
+    top: 0,
     width,
-    flexDirection: 'row',
+    zIndex: 1000,
+    marginBottom: 20,
+    height: height * 0.085,
+    backgroundColor: '#65B98F',
+    elevation: 6,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    paddingVertical: height * 0.05,
-    borderTopRightRadius: moderateScale(20),
-    borderTopLeftRadius: moderateScale(20),
+    paddingHorizontal: width * 0.06,
+    flexDirection: 'row',
+  },
+  headerTitle: {
+    fontSize: moderateScale(16),
+    color: '#fff',
+    fontWeight: 'bold',
+    marginHorizontal: width * 0.03,
   },
 });
 

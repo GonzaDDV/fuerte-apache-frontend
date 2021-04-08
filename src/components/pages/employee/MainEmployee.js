@@ -15,7 +15,6 @@ import EmployeeMap from './EmployeeMap';
 import StartRoute from './StartRoute';
 import Route from './Route';
 import MarkerPopup from './MarkerPopup';
-import NewMap from './NewMap';
 
 const MainEmployee = () => {
   const Stack = createStackNavigator();
@@ -30,7 +29,7 @@ const MainEmployee = () => {
         />
         <Stack.Screen
           name="Map"
-          component={NewMap}
+          component={EmployeeMap}
           options={{headerShown: false}}
         />
         <Stack.Screen

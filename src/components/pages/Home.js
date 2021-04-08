@@ -12,6 +12,7 @@ import {moderateScale, height, width} from '../../functions/ResponsiveFontSize';
 import Waves from '../../assets/images/waves-1.png';
 import Button1 from '../../assets/images/button-1.svg';
 import Button2 from '../../assets/images/button-2.svg';
+import ThanksButton from '../../assets/images/thanks-button.svg';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useStoreActions} from 'easy-peasy';
 import {useFocusEffect} from '@react-navigation/native';
@@ -43,20 +44,25 @@ const Home = ({navigation}) => {
           <Text style={styles.choose}>Seleccionar rol</Text>
           <TouchableWithoutFeedback onPress={() => goToScreen('Citizen Map')}>
             <Button1
-              //source={Button1}
-              height={height * 0.2}
+              height={height * 0.22}
               style={styles.button}
               resizeMode="contain"
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => goToScreen('Employee Map')}>
             <Button2
-              //source={Button2}
-              height={height * 0.2}
+              height={height * 0.22}
               style={styles.button}
               resizeMode="contain"
             />
           </TouchableWithoutFeedback>
+
+          <View style={styles.thanksButton}>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate('Thanks')}>
+              <ThanksButton resizeMode="contain" />
+            </TouchableWithoutFeedback>
+          </View>
         </View>
       </View>
     </View>
@@ -102,7 +108,13 @@ const styles = StyleSheet.create({
     marginTop: height * 0.07,
   },
   button: {
-    marginTop: height * 0.033,
+    marginTop: height * 0.02,
+  },
+  thanksButton: {
+    position: 'absolute',
+    bottom: 0,
+    right: width * 0.05,
+    zIndex: 100,
   },
 });
 

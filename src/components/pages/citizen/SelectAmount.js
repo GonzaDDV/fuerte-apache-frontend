@@ -32,7 +32,7 @@ const SelectAmount = ({route, navigation}) => {
         <View style={styles.numberButtonsContainer}>
           <View style={styles.labelContainer}>
             <View style={[styles.shortBar, {backgroundColor: '#A67E74'}]} />
-            <Text style={[styles.label, {color: '#A67E74'}]}>Residuos</Text>
+            <Text style={[styles.label, {color: '#A67E74'}]}>Orgánicos</Text>
             <View style={[styles.fullBar, {backgroundColor: '#A67E74'}]} />
           </View>
           <View style={styles.numbers}>
@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
     height,
     backgroundColor: '#fff',
     alignItems: 'center',
-    paddingVertical: height * 0.1,
+    paddingTop: height * 0.13,
+    paddingBottom: height * 0.1,
   },
   title: {
     color: '#65B98F',
@@ -166,7 +167,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignSelf: 'center',
-    marginVertical: moderateScale(40),
+    marginTop: moderateScale(40),
+    marginBottom: moderateScale(20),
     marginTop: 'auto',
     width,
   },

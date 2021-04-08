@@ -1,12 +1,18 @@
+import {useStoreActions} from 'easy-peasy';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 
 import {moderateScale, height} from '../../../functions/ResponsiveFontSize';
 
-const Route = ({goToStep}) => {
+const Route = ({finish}) => {
+  const finishRoute = useStoreActions((actions) => actions.finishRoute);
+
+  const onFinishRoute = () => {
+    finishRoute({callback: () => finish()});
+  };
   return (
     <View style={styles.mainContainer}>
-      <TouchableWithoutFeedback onPress={() => goToStep(0)}>
+      <TouchableWithoutFeedback onPress={onFinishRoute}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Terminar recorrido</Text>
         </View>

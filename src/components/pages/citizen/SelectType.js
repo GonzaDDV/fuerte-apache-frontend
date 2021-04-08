@@ -78,7 +78,7 @@ const SelectType = ({navigation}) => {
               resizeMode="contain"
             />
             <Text style={[styles.buttonText, styles.buttonTextTrash]}>
-              Residuos
+              Orgánicos
             </Text>
           </Animated.View>
         </TouchableWithoutFeedback>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     height,
     backgroundColor: '#6EB38E',
     alignItems: 'center',
-    paddingTop: height * 0.1,
+    paddingTop: height * 0.13,
   },
   title: {
     fontSize: moderateScale(30),
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   buttonImage: {width: '50%'},
   buttonText: {
-    marginTop: 15,
+    marginTop: 12,
     fontSize: moderateScale(18),
     fontFamily: 'Nunito-Regular',
   },

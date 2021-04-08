@@ -7,7 +7,6 @@ const Map = (props) => {
 
   const goToUserLocation = async () => {
     await getUserLocation(async (position) => {
-      console.log(position);
       const {latitude, longitude} = position.coords;
       mapRef.current.animateCamera({
         zoom: 15.6,
