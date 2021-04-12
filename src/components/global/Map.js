@@ -77,7 +77,7 @@ export default class App extends React.Component {
   sendLocation = async () => {
     // enviar al servidor
     const res = await axios.post(
-      'http://54.147.130.75:3000/api/users/postResiduo',
+      'https://fuerteback.stemit.com.ar/api/users/postResiduo',
       {
         id_usuario: 5, // del login
         ubicacion: JSON.stringify({

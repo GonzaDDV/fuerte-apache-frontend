@@ -86,7 +86,7 @@ const NewMap = ({navigation}) => {
       .map((item, index) => (item.selected === true ? index + '' : null))
       .filter((item) => item);
     const res = await axios.get(
-      `http://54.147.130.75:3000/api/users/getResiduos1/${selectedType}`,
+      `https://fuerteback.stemit.com.ar/api/users/getResiduos1/${selectedType}`,
     );
     if (res.data?.success === 1) {
       let markers = {};

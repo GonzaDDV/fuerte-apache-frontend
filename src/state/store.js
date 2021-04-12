@@ -76,11 +76,15 @@ export const store = createStore({
   login: thunk(async (actions, payload) => {
     actions.setLoading(true);
     try {
-      const res = await axios.post(url + '/api/users/login', payload.data);
+      const res = await axios.post(
+        'https://fuerteback.stemit.com.ar/api/users/login',
+        payload.data,
+      );
       actions.setLoading(false);
-      if (res.data.success === 1) {
+      if (res.status === 200 && res.data.success === 1) {
         actions.setAccountData(res.data);
         await AsyncStorage.setItem('loggedIn', JSON.stringify(true));
+        await AsyncStorage.setItem('token', res.data.token);
         payload.callback();
       } else {
         actions.setAccountData({error: {error: true, msg: res.data}});
@@ -94,7 +98,7 @@ export const store = createStore({
     actions.setLoading(true);
     try {
       const res = await axios.post(
-        'http://54.147.130.75:3000/api/users/register',
+        'https://fuerteback.stemit.com.ar/api/users/register',
         payload.data,
       );
       actions.setLoading(false);
@@ -123,7 +127,7 @@ export const store = createStore({
       employee: {collected},
     } = getStoreState();
     const res = await axios.post(
-      'http://54.147.130.75:3000/api/users/terminarRecorrido',
+      'https://fuerteback.stemit.com.ar/api/users/terminarRecorrido',
       {data: collected},
     );
     if (res.data.success === 1) {

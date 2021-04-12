@@ -1,1 +1,1 @@
-export const url = 'http://54.147.130.75:3000';
+export const url = 'https://fuerteback.stemit.com.ar';

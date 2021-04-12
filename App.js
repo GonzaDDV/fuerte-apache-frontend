@@ -49,7 +49,13 @@ const App = () => {
             <Stack.Screen
               name="Thanks"
               component={Thanks}
-              options={{headerShown: false}}
+              options={{
+                headerStyle: {
+                  backgroundColor: '#6EB38E',
+                },
+                headerTintColor: '#fff',
+                headerTitle: '',
+              }}
             />
             <Stack.Screen
               name="Login"

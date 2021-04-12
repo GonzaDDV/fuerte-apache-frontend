@@ -24,7 +24,12 @@ const Login = ({route, navigation}) => {
 
   const {control, handleSubmit, errors} = useForm();
   const onSubmit = async (data) => {
-    login({data, callback: () => navigation.navigate(type)});
+    login({
+      data,
+      callback: () => {
+        navigation.navigate(type);
+      },
+    });
   };
 
   return (

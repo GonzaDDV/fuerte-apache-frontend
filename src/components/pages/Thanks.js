@@ -1,4 +1,5 @@
 import React from 'react';
+import {Image} from 'react-native';
 import {View, Text, StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {width, height, moderateScale} from '../../functions/ResponsiveFontSize';
@@ -14,10 +15,20 @@ const Thanks = () => {
         que lograron que este proyecto se lleve a cabo.
       </Text>
       <View style={styles.logos}>
-        <View style={styles.logo}></View>
-        <View style={styles.logo}></View>
-        <View style={styles.logo}></View>
-        <View style={styles.logo}></View>
+        <View style={styles.logo}>
+          <Image
+            style={styles.logoImage}
+            source={require('../../assets/images/COAFI.png')}
+            resizeMode="contain"
+          />
+        </View>
+        <View style={styles.logo}>
+          <Image
+            style={styles.logoImage}
+            source={require('../../assets/images/CoCoS.png')}
+            resizeMode="contain"
+          />
+        </View>
       </View>
     </ScrollView>
   );
@@ -43,6 +54,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito-Regular',
   },
   logos: {
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
@@ -56,6 +68,16 @@ const styles = StyleSheet.create({
     marginVertical: width * 0.03,
     backgroundColor: '#fff',
     borderRadius: width * 0.2,
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    padding: moderateScale(20),
+  },
+  logoImage: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
   },
 });
 

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
+import jwtoken from 'react-native-pure-jwt';
 
 import {moderateScale, height, width} from '../../functions/ResponsiveFontSize';
 
@@ -16,12 +17,24 @@ import ThanksButton from '../../assets/images/thanks-button.svg';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useStoreActions} from 'easy-peasy';
 import {useFocusEffect} from '@react-navigation/native';
+import {decode} from 'base-64';
+import {ImageBackground} from 'react-native';
 
 const Home = ({navigation}) => {
   const resetState = useStoreActions((actions) => actions.resetState);
 
+  const [isEmployee, setIsEmployee] = useState(false);
+
   useFocusEffect(() => {
     resetState();
+
+    const getToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+      const payload = JSON.parse(decode(token.split('.')[1]));
+      const tipoUsuario = payload.result.tipo_usuario;
+      setIsEmployee(tipoUsuario === 'recolector');
+    };
+    getToken();
   }, []);
 
   const goToScreen = async (type) => {
@@ -39,30 +52,36 @@ const Home = ({navigation}) => {
     <View style={styles.mainView}>
       <Text style={styles.title}>Cultura Sustentable</Text>
       <View style={styles.wavesContainer}>
-        <Image source={Waves} style={styles.waves} resizeMode="stretch" />
-        <View style={styles.buttons}>
-          <Text style={styles.choose}>Seleccionar rol</Text>
-          <TouchableWithoutFeedback onPress={() => goToScreen('Citizen Map')}>
-            <Button1
-              height={height * 0.22}
-              style={styles.button}
-              resizeMode="contain"
-            />
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => goToScreen('Employee Map')}>
-            <Button2
-              height={height * 0.22}
-              style={styles.button}
-              resizeMode="contain"
-            />
-          </TouchableWithoutFeedback>
-
-          <View style={styles.thanksButton}>
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate('Thanks')}>
-              <ThanksButton resizeMode="contain" />
+        <ImageBackground
+          source={Waves}
+          style={styles.waves}
+          resizeMode="stretch">
+          <View style={styles.buttons}>
+            <Text style={styles.choose}>Seleccionar rol</Text>
+            <TouchableWithoutFeedback onPress={() => goToScreen('Citizen Map')}>
+              <Button1
+                height={height * 0.22}
+                style={styles.button}
+                resizeMode="contain"
+              />
             </TouchableWithoutFeedback>
+            {isEmployee && (
+              <TouchableWithoutFeedback
+                onPress={() => goToScreen('Employee Map')}>
+                <Button2
+                  height={height * 0.22}
+                  style={styles.button}
+                  resizeMode="contain"
+                />
+              </TouchableWithoutFeedback>
+            )}
           </View>
+        </ImageBackground>
+        <View style={styles.thanksButton}>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('Thanks')}>
+            <ThanksButton resizeMode="contain" />
+          </TouchableWithoutFeedback>
         </View>
       </View>
     </View>
@@ -102,9 +121,8 @@ const styles = StyleSheet.create({
   buttons: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
     width,
+    height: '100%',
     marginTop: height * 0.07,
   },
   button: {
@@ -112,7 +130,7 @@ const styles = StyleSheet.create({
   },
   thanksButton: {
     position: 'absolute',
-    bottom: 0,
+    bottom: height * 0.3,
     right: width * 0.05,
     zIndex: 100,
   },
