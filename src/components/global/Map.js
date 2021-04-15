@@ -22,6 +22,8 @@ import {getUserLocation} from '../../functions/UserLocation';
 import {width, height, moderateScale} from '../../functions/ResponsiveFontSize';
 import Popup from './Popup';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+import {decode} from 'base-64';
 
 const origin = {latitude: -34.51257677882224, longitude: -58.48521799748956};
 const destination = {
@@ -76,10 +78,14 @@ export default class App extends React.Component {
 
   sendLocation = async () => {
     // enviar al servidor
+    const token = await AsyncStorage.getItem('token');
+    const payload = JSON.parse(decode(token.split('.')[1]));
+    const idUsuario = payload.result.id_usuario;
+    console.log(idUsuario);
     const res = await axios.post(
       'https://fuerteback.stemit.com.ar/api/users/postResiduo',
       {
-        id_usuario: 5, // del login
+        id_usuario: idUsuario, // del login
         ubicacion: JSON.stringify({
           lat: this.state.region.latitude,
           lng: this.state.region.longitude,

@@ -18,6 +18,8 @@ import MapView, {
 //import MapViewDirections from 'react-native-maps-directions';
 //import Geocoder from 'react-native-geocoder';
 import {getUserLocation} from '../../../functions/UserLocation';
+import AsyncStorage from '@react-native-community/async-storage';
+import {decode} from 'base-64';
 
 import {
   width,
@@ -88,10 +90,14 @@ const CitizenMap = ({navigation}) => {
       )
       .filter((item) => item);
 
+
+    const token = await AsyncStorage.getItem('token');
+    const payload = JSON.parse(decode(token.split('.')[1]));
+    const idUsuario = payload.result.id_usuario;
     const res = await axios.post(
       'https://fuerteback.stemit.com.ar/api/users/postResiduo',
       {
-        id_usuario: 5, // del login
+        id_usuario: idUsuario, // del login
         ubicacion: {
           lat: region.latitude,
           lng: region.longitude,

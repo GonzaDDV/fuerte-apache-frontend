@@ -11,6 +11,9 @@ import Swipe from '../../../assets/images/swipe.svg';
 import {useStoreActions} from 'easy-peasy';
 import {Easing} from 'react-native';
 
+import AsyncStorage from '@react-native-community/async-storage';
+import {decode} from 'base-64';
+
 class Card extends React.Component {
   constructor(props) {
     super(props);
@@ -65,8 +68,12 @@ class Card extends React.Component {
 
 export default (props) => {
   const collectMarker = useStoreActions((actions) => actions.collectMarker);
-  const handleYup = (card) => {
-    collectMarker({id: card.id});
+  const handleYup = async(card) => {
+    const token = await AsyncStorage.getItem('token');
+    const payload = JSON.parse(decode(token.split('.')[1]));
+    const idUsuario = payload.result.id_usuario;
+
+    collectMarker({id: card.id, idUsuario: idUsuario});
     props.setMarkers((prev) => {
       const obj = prev;
       obj[card.id] = {...obj[card.id], collected: true};

@@ -51,8 +51,8 @@ const CustomMarker = ({marker, item, setOpen, routeStarted}) => {
         setOpen({
           open: true,
           markerInfo: {
-            name: 'Mateo Benítez',
-            address: 'Roosevelt 5647',
+            name: marker.nombre + ' ' + marker.apellido,
+            address: 'Dirección no disponible',
             id: marker.id_residuo,
             trash:
               marker.tipo_res === '0'
@@ -63,7 +63,7 @@ const CustomMarker = ({marker, item, setOpen, routeStarted}) => {
                 ? {number: marker.cantidad_bolsas, label: 'Reciclable'}
                 : null,
             special:
-              marker.tipo_res === '2' ? {number: 2, label: 'Especial'} : null,
+              marker.tipo_res === '2' ? {number: marker.cantidad_bolsas, label: 'Especial'} : null,
           },
         })
       }>

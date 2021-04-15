@@ -2,8 +2,16 @@ import {action, createStore, thunk} from 'easy-peasy';
 import {url} from '../functions/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import {decode} from 'base-64';
 
 // TYPES: trash, special, recycle
+
+getUser = async(callback) => {
+  const token = await AsyncStorage.getItem('token');
+  const payload = JSON.parse(decode(token.split('.')[1]));
+  const idUsuario = payload.result.id_usuario;
+  callback(idUsuario);
+}
 
 const initialState = {
   citizen: {
@@ -33,9 +41,14 @@ const initialState = {
     error: {},
     loggedIn: false,
     token: '',
+    idUsuario: '',
     data: {},
   },
 };
+
+getUser((idUsuario) => {
+  initialState.account.idUsuario = idUsuario;
+})
 
 export const store = createStore({
   //! STATE
@@ -117,7 +130,7 @@ export const store = createStore({
   collectMarker: action((state, payload) => {
     state.employee.collected.push({
       id_residuo: payload.id,
-      id_recolector: 1,
+      id_recolector: payload.idUsuario,
       estado: false,
       fecha_hora_recoleccion: Date.now().toLocaleString(),
     });
