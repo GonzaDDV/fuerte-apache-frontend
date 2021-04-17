@@ -25,7 +25,7 @@ import Register from './src/components/pages/account/Register';
 import {StoreProvider} from 'easy-peasy';
 import {store} from './src/state/store';
 import {LogBox} from 'react-native';
-import Thanks from './src/components/pages/Thanks';
+import Thanks from './src/components/pages/thanks/Thanks';
 
 LogBox.ignoreAllLogs();
 
