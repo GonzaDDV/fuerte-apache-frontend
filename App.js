@@ -26,6 +26,8 @@ import {StoreProvider} from 'easy-peasy';
 import {store} from './src/state/store';
 import {LogBox} from 'react-native';
 import Thanks from './src/components/pages/thanks/Thanks';
+import Store from './src/components/pages/store/Store';
+
 
 LogBox.ignoreAllLogs();
 
@@ -45,7 +47,17 @@ const App = () => {
               component={Home}
               options={{headerShown: false}}
             />
-
+            <Stack.Screen
+              name="Store"
+              component={Store}
+              options={{
+                headerStyle: {
+                  backgroundColor: '#6EB38E',
+                },
+                headerTintColor: '#fff',
+                headerTitle: '',
+              }}
+            />
             <Stack.Screen
               name="Thanks"
               component={Thanks}

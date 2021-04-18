@@ -14,6 +14,7 @@ import Waves from '../../assets/images/waves-1.png';
 import Button1 from '../../assets/images/button-1.svg';
 import Button2 from '../../assets/images/button-2.svg';
 import ThanksButton from '../../assets/images/thanks-button.svg';
+import StoreButton from '../../assets/images/store-button.svg';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useStoreActions} from 'easy-peasy';
 import {useFocusEffect} from '@react-navigation/native';
@@ -77,6 +78,12 @@ const Home = ({navigation}) => {
             )}
           </View>
         </ImageBackground>
+        <View style={styles.storeButton}>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('Store')}>
+            <StoreButton resizeMode="contain" />
+          </TouchableWithoutFeedback>
+        </View>
         <View style={styles.thanksButton}>
           <TouchableWithoutFeedback
             onPress={() => navigation.navigate('Thanks')}>
@@ -127,6 +134,12 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: height * 0.02,
+  },
+  storeButton: {
+    position: 'absolute',
+    bottom: height * 0.3,
+    left: width * 0.05,
+    zIndex: 100,
   },
   thanksButton: {
     position: 'absolute',

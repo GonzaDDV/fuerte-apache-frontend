@@ -1,0 +1,19 @@
+<svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d)">
+<path d="M4 25C4 11.1929 15.1929 0 29 0V0C42.8071 0 54 11.1929 54 25V25C54 38.8071 42.8071 50 29 50V50C15.1929 50 4 38.8071 4 25V25Z" fill="#FAFAFA"/>
+</g>
+<path d="M25.1484 37.7744C26.7005 37.7744 27.9588 36.5161 27.9588 34.9639C27.9588 33.4117 26.7005 32.1534 25.1484 32.1534C23.5962 32.1534 22.3379 33.4117 22.3379 34.9639C22.3379 36.5161 23.5962 37.7744 25.1484 37.7744Z" fill="#65B98F"/>
+<path d="M33.3505 32.1535C31.7984 32.1535 30.54 33.4118 30.54 34.964C30.54 36.5161 31.7984 37.7745 33.3505 37.7745C34.9027 37.7745 36.161 36.5161 36.161 34.964C36.161 33.4118 34.9027 32.1535 33.3505 32.1535Z" fill="#65B98F"/>
+<path d="M38.1397 29.2856H23.485L23.1983 27.6223H35.2431C35.5975 27.6233 35.9162 27.407 36.0461 27.0774L38.914 19.8505C39.0882 19.4084 38.8711 18.9088 38.429 18.7346C38.3277 18.6946 38.2198 18.6743 38.111 18.6746H21.707L21.0187 14.717C20.948 14.2986 20.5827 13.9941 20.1584 14.0001H16.8603C16.3852 14.0001 16 14.3853 16 14.8604C16 15.3356 16.3852 15.7208 16.8603 15.7208H19.4414L21.9077 30.2894C21.9784 30.7078 22.3437 31.0123 22.7681 31.0063H38.1397C38.6148 31.0063 39 30.6211 39 30.146C39 29.6708 38.6148 29.2856 38.1397 29.2856Z" fill="#65B98F"/>
+<defs>
+<filter id="filter0_d" x="0" y="0" width="58" height="58" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>
