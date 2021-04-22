@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#65B98F',
     fontSize: moderateScale(20),
-    fontFamily: 'Nunito-Regular',
+    
   },
   selected: {},
   selectedText: {

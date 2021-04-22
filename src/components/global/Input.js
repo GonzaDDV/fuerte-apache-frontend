@@ -56,15 +56,13 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     paddingLeft: 0,
     backgroundColor: '#fff',
-    fontSize: moderateScale(18),
-    fontFamily: 'Nunito-Regular',
+    fontSize: moderateScale(18)
   },
   error: {
     color: '#F44336',
     marginVertical: 8,
     marginLeft: 6,
     fontSize: moderateScale(14),
-    fontFamily: 'Nunito-Regular',
   },
 });
 

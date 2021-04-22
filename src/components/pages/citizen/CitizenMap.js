@@ -3,17 +3,11 @@ import {
   StyleSheet,
   View,
   Text,
-  Dimensions,
   TouchableOpacity,
-  Switch,
-  Alert,
   Image,
 } from 'react-native';
 import MapView, {
-  PROVIDER_GOOGLE,
-  Marker,
-  AnimatedRegion,
-  Circle,
+  PROVIDER_GOOGLE
 } from 'react-native-maps';
 //import MapViewDirections from 'react-native-maps-directions';
 //import Geocoder from 'react-native-geocoder';
@@ -22,7 +16,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {decode} from 'base-64';
 
 import {
-  width,
   height,
   moderateScale,
 } from '../../../functions/ResponsiveFontSize';
@@ -31,7 +24,6 @@ import axios from 'axios';
 import LoadingScreen from '../../global/LoadingScreen';
 import {useStoreState} from 'easy-peasy';
 
-const GOOGLE_MAPS_APIKEY = '';
 
 const CitizenMap = ({navigation}) => {
   const [region, setRegion] = useState({

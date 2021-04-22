@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#65B98F',
     fontSize: moderateScale(28),
-    fontFamily: 'Nunito-Regular',
+    
     textAlign: 'center',
     marginBottom: height * 0.05,
   },

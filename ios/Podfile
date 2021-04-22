@@ -7,19 +7,13 @@ target 'FuerteApache' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
+  pod 'GoogleMaps'
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
 
   target 'FuerteApacheTests' do
     inherit! :complete
     # Pods for testing
-  end
-
-  # Enables Flipper.
-  #
-  # Note that if you have use_frameworks! enabled, Flipper will not work and
-  # you should disable these next few lines.
-  use_flipper!
-  post_install do |installer|
-    flipper_post_install(installer)
   end
 end
 

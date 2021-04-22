@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: '#fff',
     fontSize: moderateScale(16),
-    fontFamily: 'Nunito-Regular',
+    
   },
   loaderContainer: {
     position: 'absolute',

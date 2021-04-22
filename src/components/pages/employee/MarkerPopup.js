@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   iconText: {
     fontSize: moderateScale(15),
     color: '#fff',
-    fontFamily: 'Nunito-Regular',
+    
     marginTop: 10,
     textAlign: 'center',
     width: '80%',
@@ -206,11 +206,11 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   cardNumber: {
-    fontFamily: 'Nunito-Regular',
+    
     fontSize: moderateScale(36),
   },
   cardNumberText: {
-    fontFamily: 'Nunito-Regular',
+    
     fontSize: moderateScale(14),
     textAlign: 'center',
   },
@@ -223,16 +223,16 @@ const styles = StyleSheet.create({
   },
   name: {
     color: '#fff',
-    fontFamily: 'Nunito-Regular',
+    
     fontSize: moderateScale(28),
   },
   address: {
     color: '#fff',
-    fontFamily: 'Nunito-Regular',
+    
     fontSize: moderateScale(16),
   },
   noMoreCardsText: {
-    fontFamily: 'Nunito-Regular',
+    
     fontSize: 22,
   },
 });

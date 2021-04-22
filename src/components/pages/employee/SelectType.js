@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: moderateScale(30),
     color: '#fff',
-    fontFamily: 'Nunito-Regular',
+    
     marginBottom: height * 0.05,
     textAlign: 'center',
   },
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   buttonText: {
     marginTop: 15,
     fontSize: moderateScale(18),
-    fontFamily: 'Nunito-Regular',
+    
   },
   tick: {
     position: 'absolute',

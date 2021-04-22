@@ -9,23 +9,26 @@ import {
 import jwtoken from 'react-native-pure-jwt';
 
 import {moderateScale, height, width} from '../../functions/ResponsiveFontSize';
+import {useStoreActions, useStoreState} from 'easy-peasy';
 
 import Waves from '../../assets/images/waves-1.png';
 import Button1 from '../../assets/images/button-1.svg';
 import Button2 from '../../assets/images/button-2.svg';
 import ThanksButton from '../../assets/images/thanks-button.svg';
+import LogOut from '../../assets/images/log-out.svg';
+
 import AsyncStorage from '@react-native-community/async-storage';
-import {useStoreActions} from 'easy-peasy';
 import {useFocusEffect} from '@react-navigation/native';
 import {decode} from 'base-64';
 import {ImageBackground} from 'react-native';
 
 const Home = ({navigation}) => {
   const resetState = useStoreActions((actions) => actions.resetState);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isEmployee, setIsEmployee] = useState(false);
+  const logout = useStoreActions((actions) => actions.logout);
 
-  useFocusEffect(() => {
+  useFocusEffect(async () => {
     resetState();
 
     const getToken = async () => {
@@ -38,13 +41,24 @@ const Home = ({navigation}) => {
   }, []);
 
   const goToScreen = async (type) => {
-    const isLoggedIn = await AsyncStorage.getItem('loggedIn');
+    let isLoggedIn = await AsyncStorage.getItem('token');
     if (isLoggedIn) {
       // loggedIn
       navigation.navigate(type);
     } else {
+
       // not loggedIn
       navigation.navigate('Register', {type});
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      logout(); 
+      setIsLoggedIn(true);  
+  } 
+    catch (e) {
+      throw e
     }
   };
 
@@ -77,12 +91,18 @@ const Home = ({navigation}) => {
             )}
           </View>
         </ImageBackground>
-        <View style={styles.thanksButton}>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('Thanks')}>
-            <ThanksButton resizeMode="contain" />
-          </TouchableWithoutFeedback>
-        </View>
+              <View style={styles.thanksButton}>
+                <TouchableWithoutFeedback
+                  onPress={() => navigation.navigate('Thanks')}>
+                  <ThanksButton resizeMode="contain" />
+                </TouchableWithoutFeedback>
+              </View>
+              <View style={styles.logoutButton}>
+                <TouchableWithoutFeedback
+                  onPress={() => handleLogout()}>
+                  <LogOut resizeMode="contain" />
+                </TouchableWithoutFeedback>
+              </View>
       </View>
     </View>
   );
@@ -95,7 +115,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: moderateScale(32),
-    fontFamily: 'Nunito-Regular',
+    
     textAlign: 'center',
     marginTop: height * 0.1,
     color: '#65B98F',
@@ -116,7 +136,7 @@ const styles = StyleSheet.create({
     marginBottom: height * 0.01,
 
     color: '#fff',
-    fontFamily: 'Nunito-Regular',
+    
   },
   buttons: {
     display: 'flex',
@@ -132,6 +152,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: height * 0.3,
     right: width * 0.05,
+    zIndex: 100,
+  },
+  logoutButton: {
+    position: 'absolute',
+    bottom: height * 0.32,
+    left: width * 0.05,
     zIndex: 100,
   },
 });

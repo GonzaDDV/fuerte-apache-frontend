@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#65B98F',
     fontSize: moderateScale(30),
-    fontFamily: 'Nunito-Regular',
+    
     textAlign: 'center',
     marginBottom: height * 0.05,
   },
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: moderateScale(16),
     marginBottom: moderateScale(12),
-    fontFamily: 'Nunito-Regular',
+    
     paddingHorizontal: moderateScale(8),
   },
   labelTrash: {

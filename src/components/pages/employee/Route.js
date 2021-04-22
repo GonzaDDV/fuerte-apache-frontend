@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#fff',
     fontSize: moderateScale(20),
-    fontFamily: 'Nunito-Regular',
+    
   },
 });
 

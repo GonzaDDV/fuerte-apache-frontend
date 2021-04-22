@@ -50,6 +50,7 @@ const Login = ({route, navigation}) => {
               value={value}
               onBlur={onBlur}
               error={errors.email}
+              
             />
           )}
           name="email"

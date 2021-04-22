@@ -107,6 +107,18 @@ export const store = createStore({
     }
   }),
 
+  logout: thunk(async (actions) => {
+    try {
+      await AsyncStorage.setItem('loggedIn', JSON.stringify(false));
+      await AsyncStorage.removeItem('token');
+      actions.setAccountData(null);
+      console.log('Se cerró sesión')
+      return;
+    } catch (err) {
+      throw err;
+    }
+  }),
+
   register: thunk(async (actions, payload) => {
     actions.setLoading(true);
     try {

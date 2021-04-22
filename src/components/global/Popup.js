@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
     height: height * 0.2,
   },
   text: {
-    fontFamily: 'Nunito-Bold',
     textAlign: 'center',
     fontSize: moderateScale(24),
     marginTop: 6,
