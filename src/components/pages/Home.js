@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import jwtoken from 'react-native-pure-jwt';
 
@@ -15,6 +16,7 @@ import Button1 from '../../assets/images/button-1.svg';
 import Button2 from '../../assets/images/button-2.svg';
 import ThanksButton from '../../assets/images/thanks-button.svg';
 import StoreButton from '../../assets/images/store-button.svg';
+import CerrarSesion from '../../assets/images/cerrar-sesion.svg';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useStoreActions} from 'easy-peasy';
 import {useFocusEffect} from '@react-navigation/native';
@@ -23,29 +25,43 @@ import {ImageBackground} from 'react-native';
 
 const Home = ({navigation}) => {
   const resetState = useStoreActions((actions) => actions.resetState);
+  const logout = useStoreActions((actions) => actions.logout)
 
   const [isEmployee, setIsEmployee] = useState(false);
 
   useFocusEffect(() => {
     resetState();
 
+    goToScreen('Home')
+
     const getToken = async () => {
       const token = await AsyncStorage.getItem('token');
-      const payload = JSON.parse(decode(token.split('.')[1]));
-      const tipoUsuario = payload.result.tipo_usuario;
-      setIsEmployee(tipoUsuario === 'recolector');
+      if (token != '0') {
+        const payload = JSON.parse(decode(token.split('.')[1]));
+        const tipoUsuario = payload.result.tipo_usuario;
+        setIsEmployee(tipoUsuario === 'recolector');
+      }
+      else {
+        setIsEmployee(false);
+      }
     };
     getToken();
   }, []);
 
+  const handleLogout = () => {
+    logout({callback: async() => {
+        navigation.navigate('Login');
+    }});
+  }
+
   const goToScreen = async (type) => {
-    const isLoggedIn = await AsyncStorage.getItem('loggedIn');
-    if (isLoggedIn) {
+    const token = await AsyncStorage.getItem('token');
+    if (token != '0') {
       // loggedIn
       navigation.navigate(type);
     } else {
       // not loggedIn
-      navigation.navigate('Register', {type});
+      navigation.navigate('Login', {type});
     }
   };
 
@@ -83,6 +99,12 @@ const Home = ({navigation}) => {
             onPress={() => navigation.navigate('Store')}>
             <StoreButton resizeMode="contain" />
           </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.closeSessionButton}>
+          <TouchableOpacity
+            onPress={() => handleLogout()}>
+            <CerrarSesion resizeMode="contain" />
+          </TouchableOpacity>
         </View>
         <View style={styles.thanksButton}>
           <TouchableWithoutFeedback
@@ -137,14 +159,20 @@ const styles = StyleSheet.create({
   },
   storeButton: {
     position: 'absolute',
-    bottom: height * 0.3,
+    bottom: height * 0.27,
     left: width * 0.05,
     zIndex: 100,
   },
   thanksButton: {
     position: 'absolute',
-    bottom: height * 0.3,
+    bottom: height * 0.27,
     right: width * 0.05,
+    zIndex: 100,
+  },
+  closeSessionButton: {
+    position: 'absolute',
+    bottom: height * 0.29,
+    left: width * 0.33,
     zIndex: 100,
   },
 });

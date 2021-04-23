@@ -107,6 +107,14 @@ export const store = createStore({
     }
   }),
 
+  logout: thunk(async (actions, payload) => {
+    actions.setLoading(true);
+    await AsyncStorage.setItem('loggedIn', JSON.stringify(false));
+    await AsyncStorage.setItem('token', '0');
+    payload.callback();
+    actions.setLoading(false);
+  }),
+
   register: thunk(async (actions, payload) => {
     actions.setLoading(true);
     try {

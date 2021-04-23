@@ -12,14 +12,13 @@ import ErrorMessage from '../../global/ErrorMessage';
 const Register = ({route, navigation}) => {
   const register = useStoreActions((actions) => actions.register);
   const error = useStoreState((state) => state.account.error);
-  const {type} = route.params;
 
   const {control, handleSubmit, errors} = useForm();
   const onSubmit = (data) => {
     const dataToSend = {...data, tipo_usuario: 'ciudadano'};
     register({
       data: dataToSend,
-      callback: () => navigation.navigate('Login', {type}),
+      callback: () => navigation.navigate('Login'),
     });
   };
 
@@ -138,7 +137,7 @@ const Register = ({route, navigation}) => {
           <Text style={styles.noAccount}>¿Ya tienes cuenta?</Text>
           <Text
             style={styles.noAccountButton}
-            onPress={() => navigation.navigate('Login', {type})}>
+            onPress={() => navigation.navigate('Login')}>
             Iniciar sesión
           </Text>
         </View>

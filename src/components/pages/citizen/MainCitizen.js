@@ -50,7 +50,7 @@ const MainCitizen = () => {
         screenOptions={{
           header: () => (
             <View style={styles.header}>
-              <FontAwesome
+              {/* <FontAwesome
                 name="map-marker-alt"
                 size={moderateScale(16)}
                 color="#fff"
@@ -60,7 +60,7 @@ const MainCitizen = () => {
                 name="chevron-down"
                 size={moderateScale(16)}
                 color="#fff"
-              />
+              /> */}
             </View>
           ),
         }}>

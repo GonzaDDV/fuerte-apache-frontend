@@ -37,7 +37,7 @@ const Thanks = () => {
         />
         <DevCard 
           name='Gonzalo Diaz'
-          job='UI/UX Designer'
+          job='Frontend Developer'
           img={require('../../../assets/images/devs/gonza.jpeg')}
         />
         <DevCard 
@@ -114,8 +114,25 @@ const Thanks = () => {
               resizeMode="contain"
             />
           </View>
+          <View style={styles.logo}>
+            <Image
+              style={styles.logoImage}
+              source={require('../../../assets/images/sponsors/proyectar.jpeg')}
+              resizeMode="contain"
+            />
+          </View>
+        </View>
+        <View style={styles.logoRow}>
+          <View style={styles.logo}>
+            <Image
+              style={styles.logoImage}
+              source={require('../../../assets/images/sponsors/elepants.jpeg')}
+              resizeMode="contain"
+            />
+          </View>
         </View>
       </View>
+     
     </ScrollView>
   );
 };
